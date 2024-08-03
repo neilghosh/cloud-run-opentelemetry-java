@@ -1,0 +1,31 @@
+steps:
+- name: maven:3.8.3-openjdk-17
+  entrypoint: mvn
+  args: ['clean', 'install']
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/demoneil/o11y', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/demoneil/o11y']
+# # # Build Collector  
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['build', '-t', 'gcr.io/demoneil/collector', 'collector']
+# # Push the collector image to Container Registry
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['push', 'gcr.io/demoneil/collector']
+# Deploy container image to Cloud Run
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: gcloud
+#   args: ['run', 'deploy', 'o11y', '--image', 'gcr.io/demoneil/o11y', '--region', 'us-central1']
+- name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+  env:
+    - "REGION=us-central1"
+  script: |
+    gcloud run services replace run-service.yaml --region ${REGION} --quiet
+  id: DEPLOY_MULTICONTAINER
+# images:
+# - gcr.io/demoneil/o11y
+# - gcr.io/demoneil/collector
+
+#  gcloud builds submit --region=us-central1
