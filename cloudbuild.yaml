@@ -8,12 +8,12 @@ steps:
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/demoneil/o11y']
-# # # Build Collector  
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['build', '-t', 'gcr.io/demoneil/collector', 'collector']
-# # Push the collector image to Container Registry
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['push', 'gcr.io/demoneil/collector']
+# # Build Collector  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/demoneil/collector', 'collector']
+# Push the collector image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/demoneil/collector']
 # Deploy container image to Cloud Run
 # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
 #   entrypoint: gcloud

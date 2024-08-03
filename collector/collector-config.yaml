@@ -51,7 +51,7 @@ processors:
 exporters:
   googlecloud:
     log:
-      default_log_name: ltm-sample-app
+      default_log_name: o11y
   googlemanagedprometheus:
 
 extensions:

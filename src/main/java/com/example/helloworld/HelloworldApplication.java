@@ -1,6 +1,7 @@
 package com.example.helloworld;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -8,8 +9,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -52,13 +51,6 @@ public class HelloworldApplication {
 	class HelloworldController {
 
 		Tracer tracer = openTelemetry.getTracer(INSTRUMENTATION_NAME);
-		// OpenTelemetry openTelemetry;
-
-		// private final Tracer tracer;
-
-		// public HelloworldController(OpenTelemetry openTelemetry) {
-		// this.tracer = openTelemetry.getTracer("application");
-		// }
 
 		@GetMapping("/")
 		String hello() {
@@ -77,14 +69,15 @@ public class HelloworldApplication {
 
 		@GetMapping("/dowork")
 		String doWork(@RequestHeader Map<String, String> headers) {
-			logger.info(String.format("Trade Header ", headers.get("x-cloud-trace-context")));
+			logger.info(String.format("Trade Header %s", headers.get("x-cloud-trace-context")));
 			String[] ids = (headers.get("x-cloud-trace-context").split(";"))[0].split("/");
 			logger.info(String.format("Trace Parent Context  '%s' ", ids[0]));
-			logger.info(String.format("Span Parent Context  '%s' ", ids[1]));
+			String spanIdHex = (new BigInteger(ids[1])).toString(16);
+			logger.info(String.format("Span Parent Context  '%s' ", spanIdHex));
 
 			SpanContext remoteContext = SpanContext.createFromRemoteParent(
 					ids[0],
-					ids[1],
+					spanIdHex,
 					TraceFlags.getSampled(),
 					TraceState.getDefault());
 
