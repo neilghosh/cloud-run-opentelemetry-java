@@ -1,3 +1,11 @@
+# OpenTelemetry Tracing in Google Cloud Run
+
+## Deploy to Cloud Run
+
+```
+  gcloud builds submit --region=us-central1
+```
+
 https://cloud.google.com/trace/docs/trace-context
 https://cloud.google.com/trace/docs/overview
 https://cloud.google.com/run/docs/deploying

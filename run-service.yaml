@@ -21,7 +21,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: o11y-00020
+      name: o11y-00033
       annotations:
         run.googleapis.com/execution-environment: gen1
         run.googleapis.com/container-dependencies: '{"app":["collector"]}'
